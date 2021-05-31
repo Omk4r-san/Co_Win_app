@@ -34,6 +34,7 @@ dependencies:
   unicons: ^2.0.1
   dependencies:
   curved_navigation_bar: ^0.3.7
+  url_launcher: ^6.0.2
   
 dev_dependencies:
   flutter_test:

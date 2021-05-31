@@ -5,7 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:unicons/unicons.dart';
 
 class CitiesScreen extends StatefulWidget {
-  CitiesScreen({Key key}) : super(key: key);
+  final List districtData;
+
+  CitiesScreen({Key key, this.districtData}) : super(key: key);
 
   @override
   _CitiesScreenState createState() => _CitiesScreenState();
@@ -34,40 +36,45 @@ class _CitiesScreenState extends State<CitiesScreen> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.88,
       child: ListView.builder(
-          itemCount: 10,
+          itemCount: widget.districtData.length,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DetailScreen()),
-                  );
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.18,
-                  child: Column(
-                    children: [
-                      Text(
-                        "City",
-                        style: titlelabelStyle,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _statCard("assets/bacteria.svg", "Active", "54641"),
-                          _statCard("assets/skeleton.svg", "Deaths", "54641"),
-                          _statCard("assets/patient.svg", "Confirmed", "54641"),
-                          _statCard("assets/plant.svg", "Recovered", "54641")
-                        ],
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.03,
-                      ),
-                      Divider(),
-                    ],
-                  ),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.18,
+                child: Column(
+                  children: [
+                    Text(
+                      widget.districtData[index].district,
+                      style: titlelabelStyle,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _statCard(
+                          "assets/bacteria.svg",
+                          "Active",
+                          widget.districtData[index].active.toString(),
+                        ),
+                        _statCard(
+                          "assets/skeleton.svg",
+                          "Deaths",
+                          widget.districtData[index].deceased.toString(),
+                        ),
+                        _statCard(
+                          "assets/patient.svg",
+                          "Confirmed",
+                          widget.districtData[index].confirmed.toString(),
+                        ),
+                        _statCard("assets/plant.svg", "Recovered",
+                            widget.districtData[index].recovered.toString())
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.03,
+                    ),
+                    Divider(),
+                  ],
                 ),
               ),
             );

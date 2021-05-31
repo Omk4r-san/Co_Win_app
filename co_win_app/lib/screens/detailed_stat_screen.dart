@@ -1,4 +1,6 @@
 import 'package:co_win_app/screens/cities_screen.dart';
+import 'package:co_win_app/services/api.dart';
+import 'package:co_win_app/services/state_stat_model.dart';
 import 'package:co_win_app/shared/colors.dart';
 import 'package:co_win_app/shared/styles.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +21,6 @@ class _DetailedStatState extends State<DetailedStat> {
         height: MediaQuery.of(context).size.height * 0.94,
         child: Column(
           children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.03,
-            ),
             _topCard(),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -41,64 +40,82 @@ class _DetailedStatState extends State<DetailedStat> {
   }
 
   Widget _topCard() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.2,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: kRedColor,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Text(
-            "Patients all over India",
-            style: titlelabelStyle.copyWith(
-              color: Colors.white,
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.2,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: kRedColor,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text(
+              "Patients all over India",
+              style: titlelabelStyle.copyWith(
+                color: Colors.white,
+                fontSize: 25,
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
 
   Widget _stateList() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.61,
-      child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CitiesScreen()),
-                  );
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "state",
-                            style: subtitlelabelStyle,
-                          ),
-                          Icon(UniconsLine.angle_right)
-                        ],
+    return FutureBuilder<List<StateStatModel>>(
+      future: ApiManager().getStateStat(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.67,
+            child: ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CitiesScreen(
+                                    districtData:
+                                        snapshot.data[index].districtData,
+                                  )),
+                        );
+                      },
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  snapshot.data[index].state,
+                                  style: subtitlelabelStyle,
+                                ),
+                                Icon(UniconsLine.angle_right)
+                              ],
+                            ),
+                            Divider()
+                          ],
+                        ),
                       ),
-                      Divider()
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
+                    ),
+                  );
+                }),
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

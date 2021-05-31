@@ -1,8 +1,11 @@
+import 'package:co_win_app/services/api.dart';
+import 'package:co_win_app/services/stats_model.dart';
 import 'package:co_win_app/shared/colors.dart';
 import 'package:co_win_app/shared/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -12,6 +15,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  _launchCaller() async {
+    const url = "tel:1234567";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,15 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.03,
                 ),
-                Center(
-                  child: Wrap(spacing: 10.0, runSpacing: 10.0, children: [
-                    _statCard("Total Cases", "assets/bacteria.svg", "4465454"),
-                    _statCard("Total Deaths", "assets/skeleton.svg", "445464"),
-                    _statCard("Total cases in India", "assets/patient.svg",
-                        "4564564"),
-                    _statCard("Total Cured", "assets/plant.svg", "456151")
-                  ]),
-                ),
+                _futureBuilder()
               ],
             ),
           ),
@@ -126,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20), color: Colors.white),
         child: TextButton(
-          onPressed: () {},
+          onPressed: () => _launchCaller(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -154,6 +158,29 @@ class _HomeScreenState extends State<HomeScreen> {
           Text(text, style: subtitlelabelStyle),
         ],
       ),
+    );
+  }
+
+  Widget _futureBuilder() {
+    return FutureBuilder<StatsModel>(
+      future: ApiManager().getStat(),
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.hasData) {
+          return Center(
+            child: Wrap(spacing: 10.0, runSpacing: 10.0, children: [
+              _statCard("Total Cases", "assets/bacteria.svg",
+                  snapshot.data.data.summary.total.toString()),
+              _statCard("Total Deaths", "assets/skeleton.svg",
+                  snapshot.data.data.summary.deaths.toString()),
+              _statCard("Total cases in India", "assets/patient.svg",
+                  snapshot.data.data.summary.confirmedCasesIndian.toString()),
+              _statCard("Total Cured", "assets/plant.svg",
+                  snapshot.data.data.summary.discharged.toString())
+            ]),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
