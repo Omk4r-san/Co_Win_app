@@ -1,9 +1,9 @@
 # Co_Win_app
 
-<img src="https://raw.githubusercontent.com/Omk4r-san/Co_Win_app/main/co_win_app/co_win_screenshots/WhatsApp%20Image%202021-05-30%20at%209.23.47%20PM(1).jpeg">
+<img src="https://raw.githubusercontent.com/Omk4r-san/Co_Win_app/main/co_win_app/co_win_screenshots/ss1.jpeg">
 <br>
-<img src="https://raw.githubusercontent.com/Omk4r-san/Co_Win_app/main/co_win_app/co_win_screenshots/WhatsApp%20Image%202021-05-30%20at%209.23.47%20PM(2).jpeg">
+<img src="https://raw.githubusercontent.com/Omk4r-san/Co_Win_app/main/co_win_app/co_win_screenshots/ss2.jpeg">
 <br>
-<img src="https://raw.githubusercontent.com/Omk4r-san/Co_Win_app/main/co_win_app/co_win_screenshots/WhatsApp%20Image%202021-05-30%20at%209.23.47%20PM.jpeg">
+<img src="https://raw.githubusercontent.com/Omk4r-san/Co_Win_app/main/co_win_app/co_win_screenshots/ss3.jpeg">
 <br>
-<img src="https://raw.githubusercontent.com/Omk4r-san/Co_Win_app/main/co_win_app/co_win_screenshots/WhatsApp%20Image%202021-05-30%20at%209.23.47%20PM.jpeg">
+<img src="https://raw.githubusercontent.com/Omk4r-san/Co_Win_app/main/co_win_app/co_win_screenshots/ss4.jpeg">
